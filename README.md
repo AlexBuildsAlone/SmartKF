@@ -23,8 +23,8 @@ python app.py
 
 Init Script:
 ```bash
-git clone https://github.com/AlexBuildsAlone/SmartKF.git /app
-cd /app
+git clone https://github.com/AlexBuildsAlone/SmartKF.git ~/app
+cd ~/app
 pip install -r requirements.txt
 mkdir -p /data/docs /data/logs
 if [ -z "$(ls -A /data/docs 2>/dev/null)" ]; then cp data/docs/* /data/docs/; fi
