@@ -1,7 +1,7 @@
 import subprocess
 import os
 import sys
-import socket
+import threading
 import time
 
 def run(cmd, **kwargs):
@@ -15,21 +15,10 @@ def run(cmd, **kwargs):
         sys.exit(1)
     return result
 
-def wait_for_port(port, timeout=30):
-    """等待服务就绪"""
-    for i in range(timeout):
-        try:
-            sock = socket.socket()
-            sock.connect(("localhost", port))
-            sock.close()
-            return True
-        except OSError:
-            time.sleep(1)
-    return False
-
 # 1. 克隆代码
-run(["git", "clone", "https://github.com/AlexBuildsAlone/SmartKF.git", os.path.expanduser("~/app")])
-os.chdir(os.path.expanduser("~/app"))
+app_dir = os.path.expanduser("~/app")
+run(["git", "clone", "https://github.com/AlexBuildsAlone/SmartKF.git", app_dir])
+os.chdir(app_dir)
 
 # 2. 安装依赖
 run(["pip", "install", "-r", "requirements.txt"])
@@ -43,14 +32,22 @@ if not os.listdir("/data/docs"):
     run("cp data/docs/* /data/docs/", shell=True)
     print("[SmartKF] 已复制示例文档到 /data/docs/")
 
-# 5. 后台启动 Flask 服务
-print("[SmartKF] 启动服务...")
-subprocess.Popen(["python", "app.py"])
+# 5. 延迟暴露端口（等 Flask 启动后执行）
+def expose_port():
+    time.sleep(5)
+    try:
+        server_tool("create_port_preview", port=8080)
+        print("[SmartKF] 端口已暴露，部署完成!")
+    except Exception as e:
+        print(f"[SmartKF] 端口暴露失败: {e}")
 
-# 6. 等待服务就绪后暴露端口
-if wait_for_port(8080):
-    print("[SmartKF] 服务已就绪，暴露端口...")
-    server_tool("create_port_preview", port=8080)
-    print("[SmartKF] 部署完成!")
-else:
-    print("[SmartKF] 错误: 服务启动超时（30秒），请检查日志")
+threading.Thread(target=expose_port, daemon=True).start()
+
+# 6. 主进程直接运行 Flask（阻塞，保持容器存活）
+print("[SmartKF] 启动服务...")
+sys.path.insert(0, app_dir)
+from knowledge import load_knowledge
+from app import app
+
+load_knowledge(os.environ.get("DOCS_DIR", "/data/docs"))
+app.run(host="0.0.0.0", port=8080, debug=False)
