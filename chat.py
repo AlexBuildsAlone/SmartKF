@@ -5,11 +5,17 @@ import json
 from openai import OpenAI
 from knowledge import search, is_empty
 
-# 初始化 OpenAI 客户端
-client = OpenAI(
-    api_key=os.environ.get("OPENAI_API_KEY", ""),
-    base_url=os.environ.get("OPENAI_BASE_URL", "https://api.openai.com/v1"),
-)
+# 延迟初始化 OpenAI 客户端
+_client = None
+
+def _get_client():
+    global _client
+    if _client is None:
+        _client = OpenAI(
+            api_key=os.environ.get("OPENAI_API_KEY", ""),
+            base_url=os.environ.get("OPENAI_BASE_URL", "https://api.openai.com/v1"),
+        )
+    return _client
 
 # 加载配置
 def _load_config():
@@ -76,14 +82,17 @@ def get_reply(message, history=None):
     messages.append({"role": "user", "content": message})
 
     # 调用 LLM
-    response = client.chat.completions.create(
-        model=os.environ.get("OPENAI_MODEL", "gpt-4o-mini"),
-        messages=messages,
-        temperature=0.3,
-        max_tokens=1024,
-    )
-
-    reply = response.choices[0].message.content
+    try:
+        response = _get_client().chat.completions.create(
+            model=os.environ.get("OPENAI_MODEL", "gpt-4o-mini"),
+            messages=messages,
+            temperature=0.3,
+            max_tokens=1024,
+        )
+        reply = response.choices[0].message.content
+    except Exception as e:
+        print(f"[SmartKF] LLM 调用失败: {e}")
+        return "抱歉，AI 服务暂时不可用，请稍后再试。"
 
     # 输出过滤：检查是否意外泄露系统提示词片段
     leak_keywords = ["安全规则", "最高优先级", "系统提示词", "OPENAI_API_KEY", "OPENAI_BASE_URL"]
