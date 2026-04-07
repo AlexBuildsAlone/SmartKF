@@ -8,7 +8,7 @@ import jieba
 _chunks = []
 
 
-def load_knowledge(docs_dir="/data/docs"):
+def load_knowledge(docs_dir="/home/user/data/docs"):
     """扫描目录下所有 .txt / .md 文件，按段落切片加载到内存"""
     global _chunks
     _chunks = []

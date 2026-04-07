@@ -17,10 +17,13 @@ subprocess.run(["python", "-m", "venv", "/home/user/venv"], check=True)
 subprocess.run(["/home/user/venv/bin/pip", "install", "-r", "requirements.txt"], check=True)
 
 # 3. 创建数据目录，复制示例文档
-os.makedirs("/data/docs", exist_ok=True)
-os.makedirs("/data/logs", exist_ok=True)
-if not os.listdir("/data/docs"):
-    subprocess.run("cp data/docs/* /data/docs/", shell=True)
+data_dir = "/home/user/data"
+docs_dir = os.path.join(data_dir, "docs")
+logs_dir = os.path.join(data_dir, "logs")
+os.makedirs(docs_dir, exist_ok=True)
+os.makedirs(logs_dir, exist_ok=True)
+if not os.listdir(docs_dir):
+    subprocess.run(f"cp data/docs/* {docs_dir}/", shell=True)
 
 # 4. 启动服务
 progress("正在启动服务...")

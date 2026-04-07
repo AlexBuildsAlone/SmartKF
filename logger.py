@@ -4,7 +4,7 @@ import os
 import json
 from datetime import datetime, timezone
 
-LOGS_DIR = os.environ.get("LOGS_DIR", "/data/logs")
+LOGS_DIR = os.environ.get("LOGS_DIR", "/home/user/data/logs")
 
 
 def _ensure_dir():

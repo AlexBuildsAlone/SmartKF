@@ -130,7 +130,7 @@ def api_session_detail(session_id):
 
 if __name__ == "__main__":
     # 启动时加载知识库
-    docs_dir = os.environ.get("DOCS_DIR", "/data/docs")
+    docs_dir = os.environ.get("DOCS_DIR", "/home/user/data/docs")
     load_knowledge(docs_dir)
 
     port = int(os.environ.get("PORT", 8080))
