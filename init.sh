@@ -13,7 +13,8 @@ os.chdir(app_dir)
 
 # 2. 安装依赖
 progress("正在安装依赖...")
-subprocess.run(["pip", "install", "--user", "-r", "requirements.txt"], check=True)
+subprocess.run(["python", "-m", "venv", "/home/user/venv"], check=True)
+subprocess.run(["/home/user/venv/bin/pip", "install", "-r", "requirements.txt"], check=True)
 
 # 3. 创建数据目录，复制示例文档
 os.makedirs("/data/docs", exist_ok=True)
@@ -23,7 +24,7 @@ if not os.listdir("/data/docs"):
 
 # 4. 启动服务
 progress("正在启动服务...")
-print(call_tool("exec", command=f"python app.py", cwd=app_dir, detach=True))
+print(call_tool("exec", command=f"/home/user/venv/bin/python app.py", cwd=app_dir, detach=True))
 
 # 5. 暴露端口
 progress("正在暴露端口...")
