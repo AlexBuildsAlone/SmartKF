@@ -2,7 +2,7 @@
 # SmartKF Init Script for RunJobs App Container
 # 用法：在 App Container 的 Init Script 中粘贴此内容
 
-git clone https://github.com/leonchao/SmartKF.git /app
+git clone https://github.com/AlexBuildsAlone/SmartKF.git /app
 cd /app
 
 # 安装依赖

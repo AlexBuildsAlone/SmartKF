@@ -23,7 +23,7 @@ python app.py
 
 Init Script:
 ```bash
-git clone https://github.com/leonchao/SmartKF.git /app
+git clone https://github.com/AlexBuildsAlone/SmartKF.git /app
 cd /app
 pip install -r requirements.txt
 mkdir -p /data/docs /data/logs
