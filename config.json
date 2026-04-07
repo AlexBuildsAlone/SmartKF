@@ -1,0 +1,11 @@
+{
+  "product_name": "SmartKF",
+  "welcome_message": "你好！我是 SmartKF 智能客服，有什么可以帮你的？",
+  "tone": "友好、专业、简洁",
+  "contact_info": "邮箱 support@example.com",
+  "fallback_message": "这个问题我暂时无法回答，建议您通过 {contact_info} 联系我们的人工客服。",
+  "max_history_turns": 5,
+  "admin_password": "smartkf2026",
+  "max_message_length": 1000,
+  "rate_limit_per_minute": 10
+}

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理登录</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: #f0f2f5;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .login-box {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+            text-align: center;
+            width: 360px;
+        }
+        .login-box h2 { margin-bottom: 24px; color: #333; }
+        .login-box input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #d9d9d9;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            margin-bottom: 16px;
+        }
+        .login-box input:focus { border-color: #1677ff; }
+        .login-box button {
+            width: 100%;
+            padding: 10px;
+            background: #1677ff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .login-box button:hover { background: #4096ff; }
+    </style>
+</head>
+<body>
+    <div class="login-box">
+        <h2>🔒 管理员登录</h2>
+        <input type="password" id="pwd" placeholder="请输入管理密码" autofocus
+               onkeydown="if(event.key==='Enter')login()">
+        <button onclick="login()">登录</button>
+    </div>
+    <script>
+        function login() {
+            const pwd = document.getElementById('pwd').value;
+            if (pwd) window.location.href = '/admin?password=' + encodeURIComponent(pwd);
+        }
+    </script>
+</body>
+</html>
