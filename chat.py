@@ -88,6 +88,7 @@ def get_reply(message, history=None):
             messages=messages,
             temperature=0.3,
             max_tokens=1024,
+            timeout=30,
         )
         reply = response.choices[0].message.content
     except Exception as e:

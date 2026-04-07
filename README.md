@@ -21,20 +21,10 @@ python app.py
 
 ### RunJobs App Container 部署
 
-Init Script（选择 **Python** 类型）:
+Init Script（选择 **Python** 类型），完整内容见 `init.sh`，核心流程：
 ```python
-import subprocess, os, time
-
-subprocess.run(["git", "clone", "https://github.com/AlexBuildsAlone/SmartKF.git", os.path.expanduser("~/app")], check=True)
-os.chdir(os.path.expanduser("~/app"))
-subprocess.run(["pip", "install", "-r", "requirements.txt"], check=True)
-os.makedirs("/data/docs", exist_ok=True)
-os.makedirs("/data/logs", exist_ok=True)
-if not os.listdir("/data/docs"):
-    subprocess.run("cp data/docs/* /data/docs/", shell=True)
-subprocess.Popen(["python", "app.py"])
-time.sleep(3)
-server_tool("create_port_preview", port=8080)
+# 1. git clone → 2. pip install → 3. 创建数据目录 → 4. 复制示例文档
+# 5. 后台启动 Flask → 6. 等待端口就绪 → 7. server_tool 暴露端口
 ```
 
 ## 配置
