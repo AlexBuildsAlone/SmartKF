@@ -21,14 +21,20 @@ python app.py
 
 ### RunJobs App Container 部署
 
-Init Script:
-```bash
-git clone https://github.com/AlexBuildsAlone/SmartKF.git ~/app
-cd ~/app
-pip install -r requirements.txt
-mkdir -p /data/docs /data/logs
-if [ -z "$(ls -A /data/docs 2>/dev/null)" ]; then cp data/docs/* /data/docs/; fi
-python app.py
+Init Script（选择 **Python** 类型）:
+```python
+import subprocess, os, time
+
+subprocess.run(["git", "clone", "https://github.com/AlexBuildsAlone/SmartKF.git", os.path.expanduser("~/app")], check=True)
+os.chdir(os.path.expanduser("~/app"))
+subprocess.run(["pip", "install", "-r", "requirements.txt"], check=True)
+os.makedirs("/data/docs", exist_ok=True)
+os.makedirs("/data/logs", exist_ok=True)
+if not os.listdir("/data/docs"):
+    subprocess.run("cp data/docs/* /data/docs/", shell=True)
+subprocess.Popen(["python", "app.py"])
+time.sleep(3)
+server_tool("create_port_preview", port=8080)
 ```
 
 ## 配置
