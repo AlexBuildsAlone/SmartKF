@@ -13,7 +13,7 @@ os.chdir(app_dir)
 
 # 2. 安装依赖
 progress("正在安装依赖...")
-subprocess.run(["pip", "install", "-r", "requirements.txt"], check=True)
+subprocess.run(["pip", "install", "--user", "-r", "requirements.txt"], check=True)
 
 # 3. 创建数据目录，复制示例文档
 os.makedirs("/data/docs", exist_ok=True)
